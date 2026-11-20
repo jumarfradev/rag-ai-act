@@ -1,0 +1,29 @@
+# ============================================================
+#  Entorno de PRODUCCIÓN
+#  Imagen cerrada (sin código montado), contenedor endurecido
+#  y datos persistentes separados de los de desarrollo.
+#
+#    docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
+# ============================================================
+
+name: rag-ai-act-prod
+
+services:
+  app:
+    env_file: .env.prod
+    restart: unless-stopped
+    read_only: true                # sistema de archivos del contenedor en solo lectura
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    ports:
+      - "127.0.0.1:8080:8000"      # ajustar cuando se decida la interfaz y el despliegue
+    volumes:
+      - ./data/raw:/app/data/raw:ro       # texto del Reglamento, solo lectura
+      - vectores_prod:/app/vectorstore    # índice propio de producción
+
+volumes:
+  vectores_prod:

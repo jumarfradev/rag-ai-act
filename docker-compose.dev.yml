@@ -1,0 +1,21 @@
+# ============================================================
+#  Entorno de DESARROLLO
+#  Código montado en vivo, logs detallados y datos desechables.
+#
+#    docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+# ============================================================
+
+name: rag-ai-act-dev
+
+services:
+  app:
+    env_file: .env.dev
+    ports:
+      - "127.0.0.1:8000:8000"   # ajustar cuando se decida la interfaz
+    volumes:
+      - ./src:/app/src                    # los cambios de código se ven sin reconstruir
+      - ./data:/app/data
+      - vectores_dev:/app/vectorstore     # índice propio de desarrollo
+
+volumes:
+  vectores_dev:

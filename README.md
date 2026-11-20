@@ -50,11 +50,40 @@ Las decisiones técnicas se documentan aquí según se van tomando.
 |---|---|
 | Tema: asistente de consulta sobre el AI Act | Decidido |
 | Lenguaje: Python, con Docker | Decidido |
+| Dos entornos: desarrollo y producción | Decidido |
+| Dónde se despliega producción | Por decidir |
 | Base de datos vectorial | Por decidir |
 | Modelo de embeddings | Por decidir |
 | Modelo de lenguaje (LLM) | Por decidir |
 | Estrategia de troceado del texto | Por decidir |
 | Interfaz de consulta | Por decidir |
+
+## Entornos
+
+El proyecto tiene dos entornos separados. Comparten el código, pero no las claves ni los datos.
+
+| | Desarrollo | Producción |
+|---|---|---|
+| Para qué | Probar y romper cosas sin riesgo | La versión estable que se enseña y se usa |
+| Rama de Git | `dev` | `main` |
+| Variables | `.env.dev` | `.env.prod` |
+| Docker Compose | `docker-compose.dev.yml` | `docker-compose.prod.yml` |
+| Código | Montado en vivo desde `src/` | Dentro de la imagen, sin montar |
+| Índice vectorial | Volumen y colección `ai_act_dev` | Volumen y colección `ai_act_prod` |
+| Logs | `DEBUG` | `INFO` |
+| Puerto local | 8000 | 8080 |
+
+Forma de trabajar: el día a día se hace en la rama `dev`; cuando algo está probado, se pasa a `main` con un pull request.
+
+```bash
+# Desarrollo
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+
+# Producción
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
+```
+
+Estos comandos funcionarán cuando exista el `Dockerfile`, todavía pendiente.
 
 ## Estructura prevista
 
@@ -63,11 +92,15 @@ Orientativa; se ajustará cuando empiece el desarrollo.
 ```
 .
 ├── data/
-│   └── raw/            # Texto original del Reglamento
-├── src/                # Código: ingesta, recuperación y generación
-├── tests/              # Pruebas
-├── docs/               # Documentación y decisiones
-├── .env.example        # Plantilla de variables de entorno
+│   └── raw/                  # Texto original del Reglamento
+├── src/                      # Código: ingesta, recuperación y generación
+├── tests/                    # Pruebas
+├── docs/                     # Documentación y decisiones
+├── .env.dev.example          # Plantilla de variables de desarrollo
+├── .env.prod.example         # Plantilla de variables de producción
+├── docker-compose.yml        # Base común
+├── docker-compose.dev.yml    # Entorno de desarrollo
+├── docker-compose.prod.yml   # Entorno de producción
 ├── .gitignore
 ├── .dockerignore
 ├── SECURITY.md
@@ -83,8 +116,9 @@ Pendiente de completar cuando exista código. Lo que ya aplica:
 git clone <URL-del-repositorio>
 cd <carpeta-del-repositorio>
 
-# 2. Crear el archivo de variables de entorno y rellenarlo
-cp .env.example .env
+# 2. Crear los archivos de variables de cada entorno y rellenarlos
+cp .env.dev.example .env.dev
+cp .env.prod.example .env.prod
 
 # 3. Activar las comprobaciones de seguridad antes de cada commit
 pip install pre-commit
@@ -93,7 +127,7 @@ pre-commit install
 
 ## Seguridad
 
-- Las claves y contraseñas van solo en `.env`, que no se sube al repositorio.
+- Las claves y contraseñas van solo en `.env.dev` y `.env.prod`, que no se suben al repositorio. Cada entorno usa sus propias claves.
 - Cada commit pasa por un detector de secretos (pre-commit + gitleaks) y GitHub lo vuelve a revisar en cada push.
 - Las normas completas están en [SECURITY.md](SECURITY.md).
 

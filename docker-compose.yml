@@ -1,0 +1,19 @@
+# ============================================================
+#  Base común a los dos entornos. No se usa sola: se combina con
+#  docker-compose.dev.yml o docker-compose.prod.yml.
+#
+#  Desarrollo:
+#    docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+#  Producción:
+#    docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
+#
+#  Requiere un Dockerfile en la raíz (pendiente de crear).
+# ============================================================
+
+services:
+  app:
+    build: .
+    init: true
+
+  # Base de datos vectorial: se añadirá aquí como servicio cuando se decida
+  # cuál se usa (si es una que funciona embebida en la app, no hará falta).
