@@ -1,0 +1,9 @@
+# Finales de línea coherentes entre Windows, macOS y Linux
+# (evita que los scripts fallen dentro de los contenedores Docker)
+* text=auto eol=lf
+
+*.pdf  binary
+*.png  binary
+*.jpg  binary
+*.docx binary
+*.xlsx binary

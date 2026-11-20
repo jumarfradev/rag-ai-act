@@ -1,0 +1,21 @@
+# Comprobaciones automáticas antes de cada commit.
+# Instalación (una sola vez):  pip install pre-commit && pre-commit install
+# Actualizar versiones:        pre-commit autoupdate
+repos:
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.1
+    hooks:
+      - id: gitleaks            # bloquea el commit si detecta claves o tokens
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: detect-private-key  # claves privadas (.pem, id_rsa...)
+      - id: check-added-large-files
+        args: ["--maxkb=5120"]  # nada de más de 5 MB (índices, modelos...)
+      - id: check-merge-conflict
+      - id: check-yaml
+      - id: check-json
+      - id: check-toml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace

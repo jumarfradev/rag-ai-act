@@ -1,0 +1,20 @@
+# Dependabot: avisa y propone actualizaciones cuando hay versiones nuevas
+# o vulnerabilidades en las dependencias.
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
+  # Activar cuando exista requirements.txt o pyproject.toml:
+  # - package-ecosystem: "pip"
+  #   directory: "/"
+  #   schedule:
+  #     interval: "weekly"
+
+  # Activar cuando exista el Dockerfile:
+  # - package-ecosystem: "docker"
+  #   directory: "/"
+  #   schedule:
+  #     interval: "weekly"

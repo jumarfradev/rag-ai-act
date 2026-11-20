@@ -1,0 +1,111 @@
+# ============================================================
+#  .gitignore — Asistente RAG sobre el AI Act (Python + Docker)
+# ============================================================
+
+# --- Secretos y credenciales (NUNCA al repositorio) ----------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+secrets/
+credentials*.json
+service-account*.json
+token.json
+*_token.json
+*-token.json
+.netrc
+
+# --- Python --------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# --- Tests, linters y cachés ---------------------------------
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# --- Notebooks -----------------------------------------------
+.ipynb_checkpoints/
+
+# --- Base de datos vectorial e índices (se regeneran) --------
+chroma/
+chroma_db/
+.chroma/
+qdrant_storage/
+qdrant_data/
+lancedb/
+milvus_data/
+weaviate_data/
+pgdata/
+vectorstore/
+vector_store/
+*.faiss
+*.index
+*.sqlite3
+*.db
+
+# --- Datos generados (los originales de data/raw sí se versionan)
+data/processed/
+data/interim/
+data/embeddings/
+data/cache/
+*.parquet
+*.pkl
+*.pickle
+
+# --- Modelos y cachés de modelos -----------------------------
+models/
+.cache/
+.huggingface/
+*.gguf
+*.safetensors
+*.bin
+*.onnx
+
+# --- Logs y trazas (pueden contener consultas de usuarios) ---
+logs/
+*.log
+traces/
+
+# --- Docker --------------------------------------------------
+docker-compose.override.yml
+.docker/
+
+# --- Editores y sistema operativo ----------------------------
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Herramientas de IA (configuración local) ----------------
+.claude/settings.local.json
+
+# --- Temporales ----------------------------------------------
+tmp/
+temp/
+*.tmp
+*.bak

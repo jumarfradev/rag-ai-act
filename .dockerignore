@@ -1,0 +1,79 @@
+# ============================================================
+#  .dockerignore — lo que NO debe entrar en la imagen Docker
+#  Objetivo: imágenes pequeñas y sin secretos dentro.
+# ============================================================
+
+# --- Secretos: se pasan en tiempo de ejecución, nunca en la imagen
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+secrets/
+credentials*.json
+service-account*.json
+token.json
+*_token.json
+*-token.json
+.netrc
+
+# --- Git y CI ------------------------------------------------
+.git
+.gitignore
+.gitattributes
+.github/
+.pre-commit-config.yaml
+
+# --- Entornos y cachés de Python -----------------------------
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+build/
+dist/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# --- Datos, índices y modelos: se montan como volumen --------
+data/
+chroma/
+chroma_db/
+qdrant_storage/
+qdrant_data/
+lancedb/
+pgdata/
+vectorstore/
+vector_store/
+models/
+.cache/
+*.faiss
+*.index
+*.gguf
+*.safetensors
+
+# --- Lo que no hace falta para ejecutar ----------------------
+tests/
+notebooks/
+docs/
+*.md
+logs/
+*.log
+.ipynb_checkpoints/
+
+# --- Docker --------------------------------------------------
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# --- Editores y sistema operativo ----------------------------
+.vscode/
+.idea/
+.claude/
+.DS_Store
+Thumbs.db
