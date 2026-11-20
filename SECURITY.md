@@ -4,9 +4,10 @@ Reglas mínimas para trabajar en este repositorio. Son pocas a propósito: se cu
 
 ## 1. Secretos
 
-- Las claves de API, tokens y contraseñas viven **solo** en el archivo `.env`, que no se sube a GitHub (está en `.gitignore`).
-- `.env.example` contiene únicamente los **nombres** de las variables, nunca valores reales.
-- Los secretos tampoco entran en la imagen Docker (`.dockerignore`): se pasan al contenedor al arrancarlo (`--env-file .env` o `env_file` en Docker Compose).
+- Las claves de API, tokens y contraseñas viven **solo** en los archivos `.env.dev` y `.env.prod`, que no se suben a GitHub (están en `.gitignore`).
+- `.env.dev.example` y `.env.prod.example` contienen únicamente los **nombres** de las variables, nunca valores reales.
+- **Cada entorno tiene sus propias claves.** La de desarrollo no se usa en producción ni al revés: así una fuga en desarrollo no compromete producción y cada una se puede rotar por separado.
+- Los secretos tampoco entran en la imagen Docker (`.dockerignore`): se pasan al contenedor al arrancarlo mediante `env_file` en Docker Compose.
 - Nada de claves escritas en el código, en notebooks, en el README ni en los mensajes de commit.
 
 ## 2. Si se filtra una clave
@@ -14,7 +15,7 @@ Reglas mínimas para trabajar en este repositorio. Son pocas a propósito: se cu
 El orden importa:
 
 1. **Revocar o rotar la clave** en el panel del proveedor. Hazlo lo primero: una clave subida a GitHub debe darse por comprometida aunque el repositorio sea privado.
-2. Crear una clave nueva y actualizar el `.env` local.
+2. Crear una clave nueva y actualizar el `.env.dev` o `.env.prod` que corresponda.
 3. Limpiar el historial de Git (por ejemplo con `git filter-repo`) y forzar el push.
 4. Revisar el consumo y los accesos de la clave antigua en el panel del proveedor.
 
@@ -39,6 +40,8 @@ El orden importa:
 - El contenedor se ejecuta con un usuario sin privilegios, no como `root`.
 - Los datos y la base de datos vectorial se montan como volumen; no se copian dentro de la imagen.
 - Solo se exponen los puertos necesarios y, en local, enlazados a `127.0.0.1`.
+- En producción el contenedor va endurecido: sistema de archivos en solo lectura, sin privilegios adicionales y sin código montado desde fuera (`docker-compose.prod.yml`).
+- Desarrollo y producción no comparten volúmenes ni colección vectorial.
 
 ## 6. Riesgos propios de un RAG
 
