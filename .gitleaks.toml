@@ -1,0 +1,7 @@
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Plantillas de variables de entorno sin valores"
+targetRules = ["generic-api-key"]
+paths = ['''(^|/)\.env(\.[a-z]+)?\.example$''']
